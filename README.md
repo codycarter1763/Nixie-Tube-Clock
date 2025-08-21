@@ -1,7 +1,27 @@
 # Nixie Tube Clock
 
+
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/3f882592-0aea-41ba-a384-71dc7522f895" width="48%" height="48%" alt="Left Image">
+  <img src="https://github.com/user-attachments/assets/479a62dd-9854-480c-90de-3277f28ad016" width="48%" height="48%" alt="Right Image">
+</p> 
+
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/11b8388b-a713-47b5-8416-5cd5ddfa48f3" width="48%" height="48%" alt="Left Image">
+  <img src="https://github.com/user-attachments/assets/1d5745ea-2e5c-4783-b51c-6b7e24844d45" width="48%" height="48%" alt="Right Image">
+</p> 
+
+
 # About
 This is a build log on how I built a nixie tube clock from old surplus IN-14 and IN-3 nixie tubes, a microcontroller, and real time clock. 
+
+Features of my clock include:
+- Real-time clock with battery backup
+- Daylight Saving Time (DST) adjustment
+- IR remote control for clock functions and settings
+- Quick toggling between time and date display
+- RGB animations with adjustable brightness
+- Nixie tube cathode poisoning prevention routines for long tube life
 
 ## What Are Nixie Tubes?
 Nixie tubes are a type of electronic device used for numerical displaying of letters and numbers. They were a precursor to LED displays first introduced as a useable product in the 1950's by David Hagelbarger. Nixie tubes are made up of a wire mesh anode connected to a high voltage DC source, a glass tube filled with neon and argon, and metal cathodes connected to metal pieces in the shape of a character. When the anode is powered and a cathode is grounded, a warm glow is emmited around the character. 
@@ -124,4 +144,4 @@ My goal was to have most of the components on a single board so that I didnt hav
 The PCB was fabricted by JLCPCB and came out very nice!
 
 # Closing
-
+Hope you learned something from this repository and may my example help with inspiration for your project!
