@@ -33,12 +33,18 @@ Nixie tubes were really popular because of their aesthetic, high contrast for go
   <img src="https://github.com/user-attachments/assets/135f465f-212f-4471-b1f1-bcb95fd68a47" width="48%" height="48%" alt="Right Image">
 </p> 
 
+<br/>
+<br/>
+
 # Design and Construction
 ## Design Considerations
 ### Power Supply
 For the nixie tubes to illuminate, you need to supply the anode pin with a high DC voltage. For example, an IN-14 nixie tube requires 170 - 200 volts to light up. To accomplish this, you can use a DC-DC boost converter circuit that will efficiently step up a voltage to the required value. Once the voltage is stepped up, you need to limit the amount of current supplied the tubes to 2.5mA to prevent damage. So, in series with the anode, a resistor value can be calculated using this ohms law formula.
 
 For this version of my nixie tube clock, I attempted to design a DC-DC converter for use with this build. Though, due to inefficiencies in the PCB version, the efficiency of the converter dips when loaded by tubes, creating a lot of heat. As a result, I sourced a pre-made version until I can work through the issues with my current design. 
+
+<br/>
+<br/>
 
 ### Driving The Nixie Tube
 To light up the Nixie tube, you ground a pin pertaining to a certain character that will be displayed.
@@ -51,6 +57,9 @@ Since I will have more features and parts to control on the clock, I decided to 
 
 <img width="691" height="893" alt="Screenshot 2025-08-21 115333" src="https://github.com/user-attachments/assets/f4b5ef06-91e0-453c-8979-8863cb35133b" />
 
+<br/>
+<br/>
+
 ### Shift Register Basics
 A shift register is a series of D flip-flops where the output of one flip-flop is connected to the input of another. The **Serial** pin takes in multiple bits of data and stores on the shift registers in blue. For example, if you want to store the number 1001 1011 as is on the register, each clock cycle will take a bit in through **Serial**. So after one cycle, SR1 will have bit 1, when the next clock cycle hits, serial will take in a 0 and shift SR1's 1 to SR2, so on and so forth until all bits are loaded.
 
@@ -62,9 +71,17 @@ Combining software that inputs in data pertaining to what number needs to be sho
 
 <img width="711" height="834" alt="Screen" src="https://github.com/user-attachments/assets/71837c6e-e6a2-48c7-9cc3-0da95ea226d2" />
 
+<br/>
+<br/>
+
+
 #### Controlling IN-14 Tube
 Assuming 180 volt supply, 145 volt IN-14 nixie tube sustain voltage, 2.5mA current.
 Resistor IN-14 = (VSupply - VSustain) / 2.5mA = (180 - 145) / 2.5mA = 14kOhm
+
+<br/>
+<br/>
+
 
 #### Controlling IN-3 Tube
 Since the IN-3 tube will be used as a colon for the clock, I designed a simple BJT and MOSFET switch to be able to control this tube with the Arduino.
@@ -73,6 +90,9 @@ Since the IN-3 tube will be used as a colon for the clock, I designed a simple B
 
 Assuming 180 volt supply, 75 volt IN-3 nixie tube sustain voltage, 0.8mA current.
 Resistor IN-14 = (VSupply - VSustain) / 2.5mA = (180 - 75) / 0.8mA = 130kOhm
+
+<br/>
+<br/>
 
 ### RGB LEDs and IR Remote
 For the build, I decided to add four RGB LEDs to the center of the nixie tubes to light them up different colors. I used the PCA9685 PWM IC as an RGB led driver to independently control the RGB LED colors. The IC is controlled via I2C with just two pins SDA and SCL.
@@ -83,10 +103,16 @@ I wired the output pins to a header to be able to physically wire the LEDs thoug
 
 ![image](https://github.com/user-attachments/assets/a9467ba5-9445-40fd-92eb-68f7c9fadb1c)
 
+<br/>
+<br/>
+
 ## Microcontroller and Real Time Clock (RTC)
 I used an Arduino Pro Micro clone for the form factor and 5V logic. To keep the current time even when the clock is turned off, I decided to go with a RTC board that will connect via I2C to the arduino and tell what numbers to send out to the nixie tubes.
 
 ![image](https://github.com/user-attachments/assets/9d3566cc-8304-45ca-b49d-dbe9ee0c8051)
+
+<br/>
+<br/>
 
 # Programming
 ## Real-Time-Clock
@@ -94,34 +120,71 @@ Using a real-time-clock allows for precise time keeping even when the power is t
 
 <img width="711" height="368" alt="image" src="https://github.com/user-attachments/assets/d4d64632-414e-4d2e-ab26-782572a008fd" />
 
+<br/>
+<br/>
+
 ## Display Logic
 Once the time is inputed into the array in the form 1023 for 10:23, it gets sent to the displayDigit fucntion where it takes 4 digits, packs them into 2 bytes, shifts them into the registers, and latches them to display on nixie tubes as shown earlier.
 
+
 <img width="720" height="545" alt="image" src="https://github.com/user-attachments/assets/ffb68b7c-ad58-4178-b2a5-b9246ab344c7" />
+
+<br/>
+<br/>
 
 ### Accounting For Tube Longevity With Cathode Poisoning Prevention
 Common in nixie tubes that are left on a certain digit for several days or weeks, unused cathode digits accumulate a thin insulating layer of compounds that make it harder for the tube to light up. 
+
+<br/>
+
 <img width="567" height="265" alt="image" src="https://github.com/user-attachments/assets/66099522-5001-4816-b1f6-da3644284318" />
 
 As a result, I added a slot machine type poisoning prevention where all the digits will cycle for a certain amount of time and eventually stop on the current time from right to left like a slot machine. This is done every four hours with a longer cycle done at 3AM for added tube longevity.
+
+<br/>
+<br/>
 
 ## IR Input
 Using an IR remote and reciever, you can assign certain functions to happen when pressed by a specific button. The way this works is when a button is pressed on the IR remote, a string of binary numbers are sent out and recieved. Converting this long string to HEX values makes defining to variables very useful and abstract. 
 
 <img width="492" height="440" alt="image" src="https://github.com/user-attachments/assets/5d60f7d5-1d35-4b6f-9379-a74b1ded68da" />
 
+<br/>
+<br/>
+
 ## RGB Presets
 Using the PCA9685 PWM driver IC and four non-addressable RGB LEDs allowed me to program some vibrant color schemes. Using I2C and setPWM functions, you can control each channel of an RGB LED with varying duty cycle for custom colors from 0 to 4095.
 
 To make things easier to program, I added abstraction to distinguish what PCA outputs pertained to which channel of each RGB LED. 
+
+<br/>
+<br/>
+
 <img width="358" height="198" alt="image" src="https://github.com/user-attachments/assets/5dc10f1a-8d31-4230-ab02-c1e00ae4618b" />
 
+<br/>
+<br/>
+
 For example, to turn all LEDs red, where the syntax of the abtraction is **rgbChannels[which LED][which channel, where R = 0, G = 1, B = 2], (when to start on PWM cycle), RGB_Brightness)**
+
+<br/>
+<br/>
+
 <img width="543" height="211" alt="image" src="https://github.com/user-attachments/assets/5c0f4032-1512-4429-a3fd-9f20cb84b250" />
+
+<br/>
+<br/>
 
 ### RGB to PWM Conversion
 For certain effects, instead of having to manually scale an RGB color code from 256 to 4096, I implemented a function to linearly map the values. 
+
+<br/>
+<br/>
+
 <img width="875" height="161" alt="image" src="https://github.com/user-attachments/assets/a5cacf1f-93c6-4266-bae4-c436a1f468d9" />
+
+<br/>
+<br/>
 
 ### Accounting for the Logarithmic Response of the Eyes
 For certain colors, they can appear washed out or incorrect. But using a gamma correction formula, RGB (0 - 256) to PWM (0 - 4096) can appear correctly on the RGB LEDs. As shown below, you can see a comparison of linear mapping vs the corrected gamma mapping for accurate colors.
@@ -129,6 +192,9 @@ For certain colors, they can appear washed out or incorrect. But using a gamma c
 <img width="557" height="188" alt="image" src="https://github.com/user-attachments/assets/0e00001f-b317-469e-a0e0-988504329f34" />
 
 <img width="860" height="570" alt="image" src="https://github.com/user-attachments/assets/5118a0cf-d7fb-4052-b1f2-5f6997b36b87" />
+
+<br/>
+<br/>
 
 ## Non-Blocking Functions
 To allow other clock functions and RGB presets to keep operating at the same time without an OS or threading, I used non blocking logic. 
@@ -138,11 +204,17 @@ For example, looking at the logic for the LSU preset animation, lastLSUUpdate st
 In the loop, I have toggle logic that will check whether another button has been pressed. If not, then LSU() will run again and the cycle continues. Since this is all done super fast, there is no blinking that can be seen through any preset. 
 <img width="683" height="294" alt="image" src="https://github.com/user-attachments/assets/88c82c33-e1a2-4f35-a1dc-cf1c008140ac" />
 
+<br/>
+<br/>
+
 # PCB Construction
 My goal was to have most of the components on a single board so that I didnt have to run a lot of wires. At first, I did design a high voltage nixie tube supply for use with this project, but due to efficiency issues when loaded the deisgn did not work correctly. So I just sourced a premade version for now until I can work the issues out. 
 
 The PCB was fabricted by JLCPCB and came out very nice!
 ![IMG_5490](https://github.com/user-attachments/assets/20829da0-3362-4230-b63d-d4e7af7e30ae)
+
+<br/>
+<br/>
 
 # Closing
 Hope you learned something from this repository and may my example help with inspiration for your project!
