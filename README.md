@@ -142,6 +142,7 @@ In the loop, I have toggle logic that will check whether another button has been
 My goal was to have most of the components on a single board so that I didnt have to run a lot of wires. At first, I did design a high voltage nixie tube supply for use with this project, but due to efficiency issues when loaded the deisgn did not work correctly. So I just sourced a premade version for now until I can work the issues out. 
 
 The PCB was fabricted by JLCPCB and came out very nice!
+![IMG_5490](https://github.com/user-attachments/assets/20829da0-3362-4230-b63d-d4e7af7e30ae)
 
 # Closing
 Hope you learned something from this repository and may my example help with inspiration for your project!
